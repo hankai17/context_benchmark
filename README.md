@@ -43,5 +43,9 @@ libtask 与 pdns底层压测均是ucontext 300+ns
 2. 测试fcontext切换:
 cherry-pick fcontext的commit:  git cherry-pick e4cfea88 同上编译运行scheduler_test.cc
 30ns切换一次
+3. 1/2测试的均是理想条件下即只有context切换 没有schduler调度 而在实际的scheduler框架中 
+scheduler是fiber队列的消费者 需要不断的加锁解锁 遍历队列 删除队列 还有一系列判断等等
+因此 会多消耗一些时间(大概50ns左右) 
+测试用例为normal_test.cc编译运行  得到ucontext切换时间消耗250ns fcontext切换时间消耗90ns
 
 ```
